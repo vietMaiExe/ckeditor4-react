@@ -1807,7 +1807,7 @@ ckeditor4-integrations-common@^1.0.0:
 
 "ckeditor4@https://github.com/vietMaiExe/ckeditor4.git":
   version "4.21.0"
-  resolved "https://github.com/vietMaiExe/ckeditor4.git#c41c2c8032cd4e7f84a78d1f0822d78c479d7061"
+  resolved "https://github.com/vietMaiExe/ckeditor4.git#d7e76e9fa813124dff8b81dc8d0adc3dacd81361"
 
 cli-boxes@^2.2.1:
   version "2.2.1"

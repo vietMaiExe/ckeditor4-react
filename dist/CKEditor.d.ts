@@ -3,8 +3,8 @@
  * For licensing, see LICENSE.md.
  */
 /// <reference types="react" />
-import * as PropTypes from "prop-types";
-import { CKEditorProps, CKEditorType } from "./types";
+import * as PropTypes from 'prop-types';
+import { CKEditorProps, CKEditorType } from './types';
 /**
  * `CKEditor` component is a convenient wrapper around low-level hooks.
  * It's useful for simpler use cases. For advanced usage see `useCKEditor` hook.

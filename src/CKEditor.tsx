@@ -3,23 +3,23 @@
  * For licensing, see LICENSE.md.
  */
 
-import * as React from "react";
-import * as PropTypes from "prop-types";
+import * as React from 'react';
+import * as PropTypes from 'prop-types';
 import {
 	eventNameToHandlerName,
 	defaultEvents,
 	stripPrefix,
-	handlerNameToEventName,
-} from "./events";
-import useCKEditor from "./useCKEditor";
-import { camelToKebab, getStyle } from "./utils";
+	handlerNameToEventName
+} from './events';
+import useCKEditor from './useCKEditor';
+import { camelToKebab, getStyle } from './utils';
 
 import {
 	CKEditorEventDispatcher,
 	CKEditorEventHandlerProp,
 	CKEditorProps,
-	CKEditorType,
-} from "./types";
+	CKEditorType
+} from './types';
 
 const { useEffect, useRef, useState } = React;
 
@@ -27,7 +27,7 @@ const { useEffect, useRef, useState } = React;
  * `CKEditor` component is a convenient wrapper around low-level hooks.
  * It's useful for simpler use cases. For advanced usage see `useCKEditor` hook.
  */
-function CKEditor<EventHandlerProp>({
+function CKEditor<EventHandlerProp>( {
 	config = {},
 	debug,
 	editorUrl,
@@ -41,37 +41,36 @@ function CKEditor<EventHandlerProp>({
 	 * `handlers` object must contain event handlers props only!
 	 */
 	...handlers
-}: CKEditorProps<EventHandlerProp>): JSX.Element {
+}: CKEditorProps<EventHandlerProp> ): JSX.Element {
 	/**
 	 * Uses `useState` instead of `useRef` to force re-render.
 	 */
-	console.log("editor2");
-	const [element, setElement] = useState<HTMLDivElement | null>(null);
+	const [ element, setElement ] = useState<HTMLDivElement | null>( null );
 
 	/**
 	 * Ensures referential equality of event handlers.
 	 */
-	const refs = useRef(handlers);
+	const refs = useRef( handlers );
 
-	const dispatchEvent: CKEditorEventDispatcher = ({ type, payload }) => {
+	const dispatchEvent: CKEditorEventDispatcher = ( { type, payload } ) => {
 		const handlerName = eventNameToHandlerName(
-			stripPrefix(type)
+			stripPrefix( type )
 		) as keyof CKEditorEventHandlerProp;
-		const handler = refs.current[handlerName];
+		const handler = refs.current[ handlerName ];
 
-		if (handler) {
-			handler(payload);
+		if ( handler ) {
+			handler( payload );
 		}
 	};
 
 	/**
 	 * `readOnly` prop takes precedence over `config.readOnly`.
 	 */
-	if (config && typeof readOnly === "boolean") {
+	if ( config && typeof readOnly === 'boolean' ) {
 		config.readOnly = readOnly;
 	}
 
-	const { editor, status } = useCKEditor({
+	const { editor, status } = useCKEditor( {
 		config,
 		dispatchEvent,
 		debug,
@@ -82,57 +81,57 @@ function CKEditor<EventHandlerProp>({
 		 * String nodes are handled by the hook.
 		 * `initData` as JSX is handled in the component.
 		 */
-		initContent: typeof initData === "string" ? initData : undefined,
+		initContent: typeof initData === 'string' ? initData : undefined,
 
 		/**
 		 * Subscribe only to those events for which handler was supplied.
 		 */
-		subscribeTo: Object.keys(handlers)
-			.filter((key) => key.indexOf("on") === 0)
-			.map(handlerNameToEventName),
-		type,
-	});
+		subscribeTo: Object.keys( handlers )
+			.filter( key => key.indexOf( 'on' ) === 0 )
+			.map( handlerNameToEventName ),
+		type
+	} );
 
 	/**
 	 * Sets and updates styles.
 	 */
-	useEffect(() => {
+	useEffect( () => {
 		const canSetStyles =
-			type !== "inline" &&
+			type !== 'inline' &&
 			editor &&
-			(status === "loaded" || status === "ready");
+			( status === 'loaded' || status === 'ready' );
 
-		if (style && canSetStyles) {
-			editor.container.setStyles(style);
+		if ( style && canSetStyles ) {
+			editor.container.setStyles( style );
 		}
 
 		return () => {
-			if (style && canSetStyles) {
-				Object.keys(style)
-					.map(camelToKebab)
-					.forEach((styleName) => {
-						editor.container.removeStyle(styleName);
-					});
+			if ( style && canSetStyles ) {
+				Object.keys( style )
+					.map( camelToKebab )
+					.forEach( styleName => {
+						editor.container.removeStyle( styleName );
+					} );
 			}
 		};
-	}, [editor, status, style, type]);
+	}, [ editor, status, style, type ] );
 
 	/**
 	 * Toggles read-only mode on runtime.
 	 */
-	useEffect(() => {
-		if (editor && status === "ready" && typeof readOnly === "boolean") {
-			editor.setReadOnly(readOnly);
+	useEffect( () => {
+		if ( editor && status === 'ready' && typeof readOnly === 'boolean' ) {
+			editor.setReadOnly( readOnly );
 		}
-	}, [editor, status, readOnly]);
+	}, [ editor, status, readOnly ] );
 
 	return (
 		<div
 			id={name ?? undefined}
 			ref={setElement}
-			style={getStyle(type ?? "classic", status, style)}
+			style={getStyle( type ?? 'classic', status, style )}
 		>
-			{typeof initData === "string" ? null : initData}
+			{typeof initData === 'string' ? null : initData}
 		</div>
 	);
 }
@@ -197,19 +196,19 @@ const propTypes = {
 	 * - https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-replace
 	 * - https://ckeditor.com/docs/ckeditor4/latest/api/CKEDITOR.html#method-inline
 	 */
-	type: PropTypes.oneOf<CKEditorType>(["classic", "inline"]),
+	type: PropTypes.oneOf<CKEditorType>( [ 'classic', 'inline' ] ),
 
 	/**
 	 * Event handlers.
 	 *
 	 * Each event handler's name corresponds to its respective event, e.g. `instanceReady` -> `onInstanceReady`.
 	 */
-	...defaultEvents.reduce((acc, key) => {
+	...defaultEvents.reduce( ( acc, key ) => {
 		return {
 			...acc,
-			[eventNameToHandlerName(key)]: PropTypes.func,
+			[ eventNameToHandlerName( key ) ]: PropTypes.func
 		};
-	}, {} as Record<keyof CKEditorEventHandlerProp, typeof PropTypes.func>),
+	}, {} as Record<keyof CKEditorEventHandlerProp, typeof PropTypes.func> )
 };
 
 CKEditor.propTypes = propTypes;
