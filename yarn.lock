@@ -1805,9 +1805,9 @@ ckeditor4-integrations-common@^1.0.0:
   resolved "https://registry.yarnpkg.com/ckeditor4-integrations-common/-/ckeditor4-integrations-common-1.0.0.tgz#a8afc33b94877b4d01362c7c73aa9eec162b2d20"
   integrity sha512-OAoQT/gYrHkg0qgzf6MS/rndYhq3SScLVQ3rtXQeuCE8ju7nFHg3qZ7WGA2XpFxcZzsMP6hhugXqdel5vbcC3g==
 
-"ckeditor4@https://github.com/ckeditor/ckeditor4.git":
+"ckeditor4@https://github.com/vietMaiExe/ckeditor4.git":
   version "4.21.0"
-  resolved "https://github.com/ckeditor/ckeditor4.git#e27115be7c4ed785431a962b43105ac64fd93e90"
+  resolved "https://github.com/vietMaiExe/ckeditor4.git#c41c2c8032cd4e7f84a78d1f0822d78c479d7061"
 
 cli-boxes@^2.2.1:
   version "2.2.1"
