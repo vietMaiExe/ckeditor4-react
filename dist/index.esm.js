@@ -198,8 +198,10 @@ function registerEditorEventHandler(_a) {
     };
 }
 
+var ckeditorPath = require.resolve('ckeditor4');
 var useEffect$1 = React.useEffect, useReducer = React.useReducer, useRef$1 = React.useRef;
-var defEditorUrl = 'https://cdn.ckeditor.com/4.21.0/standard-all/ckeditor.js';
+console.log('ckeditorPath', ckeditorPath);
+var defEditorUrl = ckeditorPath + '/ckeditor.js';
 var defConfig = {};
 function useCKEditor(_a) {
     var config = _a.config, debug = _a.debug, dispatchEvent = _a.dispatchEvent, _b = _a.subscribeTo, subscribeTo = _b === void 0 ? defaultEvents : _b, editorUrl = _a.editorUrl, element = _a.element, initContent = _a.initContent, _c = _a.type, type = _c === void 0 ? 'classic' : _c;
