@@ -318,10 +318,8 @@
     index_cjs.debounce = debounce;
     var getEditorNamespace_1 = index_cjs.getEditorNamespace = getEditorNamespace;
 
-    var ckeditorPath = require.resolve('ckeditor4');
     var useEffect$1 = React__namespace.useEffect, useReducer = React__namespace.useReducer, useRef$1 = React__namespace.useRef;
-    console.log('ckeditorPath', ckeditorPath);
-    var defEditorUrl = ckeditorPath + '/ckeditor.js';
+    var defEditorUrl = '../node_modules/ckeditor4/ckeditor.js';
     var defConfig = {};
     function useCKEditor(_a) {
         var config = _a.config, debug = _a.debug, dispatchEvent = _a.dispatchEvent, _b = _a.subscribeTo, subscribeTo = _b === void 0 ? defaultEvents : _b, editorUrl = _a.editorUrl, element = _a.element, initContent = _a.initContent, _c = _a.type, type = _c === void 0 ? 'classic' : _c;

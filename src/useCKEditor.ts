@@ -13,8 +13,6 @@ import {
 	namespaceEvents
 } from './events';
 
-const ckeditorPath = require.resolve('ckeditor4');
-
 import {
 	CKEditorConfig,
 	CKEditorDefaultEvent,
@@ -26,8 +24,8 @@ import {
 } from './types';
 
 const { useEffect, useReducer, useRef } = React;
-console.log( 'ckeditorPath', ckeditorPath );
-const defEditorUrl = ckeditorPath + '/ckeditor.js';
+
+const defEditorUrl = '../node_modules/ckeditor4/ckeditor.js';
 const defConfig: CKEditorConfig = {};
 
 /**
