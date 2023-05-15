@@ -352,6 +352,7 @@ var useEffect = React.useEffect, useRef = React.useRef, useState = React.useStat
 function CKEditor(_a) {
     var _b = _a.config, config = _b === void 0 ? {} : _b, debug = _a.debug, editorUrl = _a.editorUrl, initData = _a.initData, name = _a.name, readOnly = _a.readOnly, style = _a.style, type = _a.type,
     handlers = __rest(_a, ["config", "debug", "editorUrl", "initData", "name", "readOnly", "style", "type"]);
+    console.log("editor2");
     var _c = useState(null), element = _c[0], setElement = _c[1];
     var refs = useRef(handlers);
     var dispatchEvent = function (_a) {
@@ -362,7 +363,7 @@ function CKEditor(_a) {
             handler(payload);
         }
     };
-    if (config && typeof readOnly === 'boolean') {
+    if (config && typeof readOnly === "boolean") {
         config.readOnly = readOnly;
     }
     var _d = useCKEditor({
@@ -371,16 +372,16 @@ function CKEditor(_a) {
         debug: debug,
         editorUrl: editorUrl,
         element: element,
-        initContent: typeof initData === 'string' ? initData : undefined,
+        initContent: typeof initData === "string" ? initData : undefined,
         subscribeTo: Object.keys(handlers)
-            .filter(function (key) { return key.indexOf('on') === 0; })
+            .filter(function (key) { return key.indexOf("on") === 0; })
             .map(handlerNameToEventName),
-        type: type
+        type: type,
     }), editor = _d.editor, status = _d.status;
     useEffect(function () {
-        var canSetStyles = type !== 'inline' &&
+        var canSetStyles = type !== "inline" &&
             editor &&
-            (status === 'loaded' || status === 'ready');
+            (status === "loaded" || status === "ready");
         if (style && canSetStyles) {
             editor.container.setStyles(style);
         }
@@ -395,11 +396,11 @@ function CKEditor(_a) {
         };
     }, [editor, status, style, type]);
     useEffect(function () {
-        if (editor && status === 'ready' && typeof readOnly === 'boolean') {
+        if (editor && status === "ready" && typeof readOnly === "boolean") {
             editor.setReadOnly(readOnly);
         }
     }, [editor, status, readOnly]);
-    return (React.createElement("div", { id: name !== null && name !== void 0 ? name : undefined, ref: setElement, style: getStyle(type !== null && type !== void 0 ? type : 'classic', status, style) }, typeof initData === 'string' ? null : initData));
+    return (React.createElement("div", { id: name !== null && name !== void 0 ? name : undefined, ref: setElement, style: getStyle(type !== null && type !== void 0 ? type : "classic", status, style) }, typeof initData === "string" ? null : initData));
 }
 var propTypes = __assign({
     config: PropTypes.object,
@@ -409,7 +410,7 @@ var propTypes = __assign({
     name: PropTypes.string,
     readOnly: PropTypes.bool,
     style: PropTypes.object,
-    type: PropTypes.oneOf(['classic', 'inline']) }, defaultEvents.reduce(function (acc, key) {
+    type: PropTypes.oneOf(["classic", "inline"]) }, defaultEvents.reduce(function (acc, key) {
     var _a;
     return __assign(__assign({}, acc), (_a = {}, _a[eventNameToHandlerName(key)] = PropTypes.func, _a));
 }, {}));
