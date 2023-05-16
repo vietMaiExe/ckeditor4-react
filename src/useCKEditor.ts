@@ -3,15 +3,15 @@
  * For licensing, see LICENSE.md.
  */
 
-import * as React from 'react';
-import { getEditorNamespace } from 'ckeditor4-integrations-common';
-import registerEditorEventHandler from './registerEditorEventHandler';
+import * as React from "react";
+import { getEditorNamespace } from "ckeditor4-integrations-common";
+import registerEditorEventHandler from "./registerEditorEventHandler";
 import {
 	CKEditorEventAction,
 	defaultEvents,
 	EVENT_PREFIX,
-	namespaceEvents
-} from './events';
+	namespaceEvents,
+} from "./events";
 
 import {
 	CKEditorConfig,
@@ -20,19 +20,19 @@ import {
 	CKEditorHookResult,
 	CKEditorInstance,
 	CKEditorNamespace,
-	CKEditorStatus
-} from './types';
+	CKEditorStatus,
+} from "./types";
 
 const { useEffect, useReducer, useRef } = React;
 
-const defEditorUrl = '../node_modules/ckeditor4/ckeditor.js';
+const defEditorUrl = "../node_modules/ckeditor4/ckeditor.js";
 const defConfig: CKEditorConfig = {};
 
 /**
  * `useCKEditor` is a low-level hook that holds core logic for editor lifecycle.
  * It is responsible for initializing and destroying editor instance.
  */
-function useCKEditor<EditorEvent extends string>( {
+function useCKEditor<EditorEvent extends string>({
 	config,
 	debug,
 	dispatchEvent,
@@ -40,50 +40,50 @@ function useCKEditor<EditorEvent extends string>( {
 	editorUrl,
 	element,
 	initContent,
-	type = 'classic'
-}: CKEditorHookProps<EditorEvent | CKEditorDefaultEvent> ): CKEditorHookResult {
+	type = "classic",
+}: CKEditorHookProps<EditorEvent | CKEditorDefaultEvent>): CKEditorHookResult {
 	/**
 	 * Ensures stable value of `editorUrl` between renders.
 	 */
-	const editorUrlRef = useRef( editorUrl || defEditorUrl );
+	const editorUrlRef = useRef(editorUrl || defEditorUrl);
 
 	/**
 	 * Ensures stable value of `subscribeTo` between renders.
 	 */
-	const subscribeToRef = useRef( subscribeTo ?? defaultEvents );
+	const subscribeToRef = useRef(subscribeTo ?? defaultEvents);
 
 	/**
 	 * Ensures stable value of `debug` between renders.
 	 */
-	const debugRef = useRef( debug );
+	const debugRef = useRef(debug);
 
 	/**
 	 * Ensures referential stability of `dispatchEvent` between renders.
 	 */
-	const dispatchEventRef = useRef( dispatchEvent );
+	const dispatchEventRef = useRef(dispatchEvent);
 
 	/**
 	 * Ensures referential stability of `initContent`.
 	 */
-	const initContentRef = useRef( initContent );
+	const initContentRef = useRef(initContent);
 
 	/**
 	 * Ensures referential stability of editor config.
 	 */
-	const configRef = useRef( config || defConfig );
+	const configRef = useRef(config || defConfig);
 
 	/**
 	 * Ensures referential stability of editor type.
 	 */
-	const typeRef = useRef( type );
+	const typeRef = useRef(type);
 
 	/**
 	 * Holds current editor instance and hook status.
 	 */
-	const [ { editor, hookStatus }, dispatch ] = useReducer( reducer, {
+	const [{ editor, hookStatus }, dispatch] = useReducer(reducer, {
 		editor: undefined,
-		hookStatus: 'init'
-	} );
+		hookStatus: "init",
+	});
 
 	/**
 	 * Main effect. It takes care of:
@@ -94,97 +94,97 @@ function useCKEditor<EditorEvent extends string>( {
 	 *
 	 * New instance of editor will be created whenever new config is passed, new DOM element is passed, or editor type is changed.
 	 */
-	useEffect( () => {
-		if ( element && !editor ) {
-			dispatch( { type: 'loading' } );
+	useEffect(() => {
+		if (element && !editor) {
+			dispatch({ type: "loading" });
 
 			/**
 			 * Helper callback that dispatches `namespaceLoaded` event.
 			 */
-			const onNamespaceLoaded = ( CKEDITOR: CKEditorNamespace ) => {
-				if ( subscribeToRef.current.indexOf( 'namespaceLoaded' ) !== -1 ) {
-					dispatchEventRef.current?.( {
+			const onNamespaceLoaded = (CKEDITOR: CKEditorNamespace) => {
+				if (subscribeToRef.current.indexOf("namespaceLoaded") !== -1) {
+					dispatchEventRef.current?.({
 						type: CKEditorEventAction.namespaceLoaded,
-						payload: CKEDITOR
-					} );
+						payload: CKEDITOR,
+					});
 				}
 			};
 
-			const initEditor = ( CKEDITOR: CKEditorNamespace ) => {
-				const isInline = typeRef.current === 'inline';
+			const initEditor = (CKEDITOR: CKEditorNamespace) => {
+				const isInline = typeRef.current === "inline";
 				const isReadOnly = configRef.current.readOnly;
 
 				/**
 				 * Dispatches `beforeLoad` event.
 				 */
-				if ( subscribeToRef.current.indexOf( 'beforeLoad' ) !== -1 ) {
-					dispatchEventRef.current?.( {
+				if (subscribeToRef.current.indexOf("beforeLoad") !== -1) {
+					dispatchEventRef.current?.({
 						type: CKEditorEventAction.beforeLoad,
-						payload: CKEDITOR
-					} );
+						payload: CKEDITOR,
+					});
 				}
-
-				const editor = CKEDITOR[ isInline ? 'inline' : 'replace' ](
+				console.log("CKEDITOR", CKEDITOR);
+				const editor = CKEDITOR[isInline ? "inline" : "replace"](
 					element,
 					configRef.current
 				);
 
 				const subscribedEditorEvents = subscribeToRef.current.filter(
-					( evtName: any ) => namespaceEvents.indexOf( evtName ) === -1
+					(evtName: any) => namespaceEvents.indexOf(evtName) === -1
 				);
 
 				/**
 				 * Registers all subscribed events.
 				 */
-				subscribedEditorEvents.forEach( evtName => {
-					registerEditorEventHandler( {
+				subscribedEditorEvents.forEach((evtName) => {
+					registerEditorEventHandler({
 						debug: debugRef.current,
 						editor,
 						evtName,
-						handler: payload => {
-							dispatchEventRef.current?.( {
-								type: `${ EVENT_PREFIX }${ evtName }`,
-								payload
-							} );
-						}
-					} );
-				} );
+						handler: (payload) => {
+							dispatchEventRef.current?.({
+								type: `${EVENT_PREFIX}${evtName}`,
+								payload,
+							});
+						},
+					});
+				});
 
 				/**
 				 * Registers `loaded` event for the sake of hook lifecycle.
 				 */
-				registerEditorEventHandler( {
+				registerEditorEventHandler({
 					debug: debugRef.current,
 					editor,
-					evtName: 'loaded',
+					evtName: "loaded",
 					handler: () => {
-						dispatch( { type: 'loaded' } );
+						dispatch({ type: "loaded" });
 					},
-					priority: -1
-				} );
+					priority: -1,
+				});
 
 				/**
 				 * Registers handler `instanceReady` event.
 				 */
-				registerEditorEventHandler( {
+				registerEditorEventHandler({
 					debug: debugRef.current,
 					editor,
-					evtName: 'instanceReady',
-					handler: ( { editor } ) => {
-						dispatch( { type: 'ready' } );
+					evtName: "instanceReady",
+					handler: ({ editor }) => {
+						dispatch({ type: "ready" });
 
 						/**
 						 * Force editability of inline editor due to an upstream issue (ckeditor/ckeditor4#3866)
 						 */
-						if ( isInline && !isReadOnly ) {
-							editor.setReadOnly( false );
+						if (isInline && !isReadOnly) {
+							editor.setReadOnly(false);
 						}
 
 						/**
 						 * Sets initial content of editor's instance if provided.
 						 */
-						if ( initContentRef.current ) {
-							editor.setData( initContentRef.current, {
+						if (initContentRef.current) {
+							editor.setData(initContentRef.current, {
 								/**
 								 * Prevents undo icon flickering.
 								 */
@@ -195,94 +195,94 @@ function useCKEditor<EditorEvent extends string>( {
 								 */
 								callback: () => {
 									editor.resetUndo();
-								}
-							} );
+								},
+							});
 						}
 					},
-					priority: -1
-				} );
+					priority: -1,
+				});
 
 				/**
 				 * Registers `destroy` event for the sake of hook lifecycle.
 				 */
-				registerEditorEventHandler( {
+				registerEditorEventHandler({
 					debug: debugRef.current,
 					editor,
-					evtName: 'destroy',
+					evtName: "destroy",
 					handler: () => {
-						dispatch( { type: 'destroyed' } );
+						dispatch({ type: "destroyed" });
 					},
-					priority: -1
-				} );
+					priority: -1,
+				});
 
-				dispatch( {
-					type: 'unloaded',
-					payload: editor
-				} );
+				dispatch({
+					type: "unloaded",
+					payload: editor,
+				});
 			};
 
-			getEditorNamespace( editorUrlRef.current, onNamespaceLoaded )
-				.then( initEditor )
-				.catch( ( error: Error ) => {
-					if ( process.env.NODE_ENV !== 'test' ) {
-						console.error( error );
+			getEditorNamespace(editorUrlRef.current, onNamespaceLoaded)
+				.then(initEditor)
+				.catch((error: Error) => {
+					if (process.env.NODE_ENV !== "test") {
+						console.error(error);
 					}
-					dispatch( { type: 'error' } );
-				} );
+					dispatch({ type: "error" });
+				});
 		}
 
 		return () => {
-			if ( editor ) {
+			if (editor) {
 				editor.destroy();
 			}
 		};
-	}, [ editor, element ] );
+	}, [editor, element]);
 
 	return {
 		editor,
 		status: editor?.status,
-		error: hookStatus === 'error',
-		loading: hookStatus === 'loading'
+		error: hookStatus === "error",
+		loading: hookStatus === "loading",
 	};
 }
 
-function reducer( state: HookState, action: HookAction ): HookState {
-	switch ( action.type ) {
-		case 'init':
-			return { ...state, hookStatus: 'init' };
-		case 'loading':
-			return { ...state, hookStatus: 'loading' };
-		case 'unloaded':
+function reducer(state: HookState, action: HookAction): HookState {
+	switch (action.type) {
+		case "init":
+			return { ...state, hookStatus: "init" };
+		case "loading":
+			return { ...state, hookStatus: "loading" };
+		case "unloaded":
 			return {
 				editor: action.payload,
-				hookStatus: 'unloaded'
+				hookStatus: "unloaded",
 			};
-		case 'loaded':
+		case "loaded":
 			return {
 				...state,
-				hookStatus: 'loaded'
+				hookStatus: "loaded",
 			};
-		case 'ready':
+		case "ready":
 			return {
 				...state,
-				hookStatus: 'ready'
+				hookStatus: "ready",
 			};
-		case 'destroyed':
+		case "destroyed":
 			return {
 				editor: undefined,
-				hookStatus: 'destroyed'
+				hookStatus: "destroyed",
 			};
-		case 'error':
+		case "error":
 			return {
 				editor: undefined,
-				hookStatus: 'error'
+				hookStatus: "error",
 			};
 		default:
 			return state;
 	}
 }
 
-type HookInternalStatus = 'init' | 'loading' | 'error' | CKEditorStatus;
+type HookInternalStatus = "init" | "loading" | "error" | CKEditorStatus;
 
 interface HookState {
 	editor?: CKEditorInstance;

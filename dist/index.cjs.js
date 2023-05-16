@@ -224,10 +224,10 @@ function registerEditorEventHandler(_a) {
 }
 
 var useEffect$1 = React__namespace.useEffect, useReducer = React__namespace.useReducer, useRef$1 = React__namespace.useRef;
-var defEditorUrl = '../node_modules/ckeditor4/ckeditor.js';
+var defEditorUrl = "../node_modules/ckeditor4/ckeditor.js";
 var defConfig = {};
 function useCKEditor(_a) {
-    var config = _a.config, debug = _a.debug, dispatchEvent = _a.dispatchEvent, _b = _a.subscribeTo, subscribeTo = _b === void 0 ? defaultEvents : _b, editorUrl = _a.editorUrl, element = _a.element, initContent = _a.initContent, _c = _a.type, type = _c === void 0 ? 'classic' : _c;
+    var config = _a.config, debug = _a.debug, dispatchEvent = _a.dispatchEvent, _b = _a.subscribeTo, subscribeTo = _b === void 0 ? defaultEvents : _b, editorUrl = _a.editorUrl, element = _a.element, initContent = _a.initContent, _c = _a.type, type = _c === void 0 ? "classic" : _c;
     var editorUrlRef = useRef$1(editorUrl || defEditorUrl);
     var subscribeToRef = useRef$1(subscribeTo !== null && subscribeTo !== void 0 ? subscribeTo : defaultEvents);
     var debugRef = useRef$1(debug);
@@ -237,31 +237,32 @@ function useCKEditor(_a) {
     var typeRef = useRef$1(type);
     var _d = useReducer(reducer, {
         editor: undefined,
-        hookStatus: 'init'
+        hookStatus: "init",
     }), _e = _d[0], editor = _e.editor, hookStatus = _e.hookStatus, dispatch = _d[1];
     useEffect$1(function () {
         if (element && !editor) {
-            dispatch({ type: 'loading' });
+            dispatch({ type: "loading" });
             var onNamespaceLoaded = function (CKEDITOR) {
                 var _a;
-                if (subscribeToRef.current.indexOf('namespaceLoaded') !== -1) {
+                if (subscribeToRef.current.indexOf("namespaceLoaded") !== -1) {
                     (_a = dispatchEventRef.current) === null || _a === void 0 ? void 0 : _a.call(dispatchEventRef, {
                         type: CKEditorEventAction.namespaceLoaded,
-                        payload: CKEDITOR
+                        payload: CKEDITOR,
                     });
                 }
             };
             var initEditor = function (CKEDITOR) {
                 var _a;
-                var isInline = typeRef.current === 'inline';
+                var isInline = typeRef.current === "inline";
                 var isReadOnly = configRef.current.readOnly;
-                if (subscribeToRef.current.indexOf('beforeLoad') !== -1) {
+                if (subscribeToRef.current.indexOf("beforeLoad") !== -1) {
                     (_a = dispatchEventRef.current) === null || _a === void 0 ? void 0 : _a.call(dispatchEventRef, {
                         type: CKEditorEventAction.beforeLoad,
-                        payload: CKEDITOR
+                        payload: CKEDITOR,
                     });
                 }
-                var editor = CKEDITOR[isInline ? 'inline' : 'replace'](element, configRef.current);
+                console.log("CKEDITOR", CKEDITOR);
+                var editor = CKEDITOR[isInline ? "inline" : "replace"](element, configRef.current);
                 var subscribedEditorEvents = subscribeToRef.current.filter(function (evtName) { return namespaceEvents.indexOf(evtName) === -1; });
                 subscribedEditorEvents.forEach(function (evtName) {
                     registerEditorEventHandler({
@@ -272,27 +273,27 @@ function useCKEditor(_a) {
                             var _a;
                             (_a = dispatchEventRef.current) === null || _a === void 0 ? void 0 : _a.call(dispatchEventRef, {
                                 type: "".concat(EVENT_PREFIX).concat(evtName),
-                                payload: payload
+                                payload: payload,
                             });
-                        }
+                        },
                     });
                 });
                 registerEditorEventHandler({
                     debug: debugRef.current,
                     editor: editor,
-                    evtName: 'loaded',
+                    evtName: "loaded",
                     handler: function () {
-                        dispatch({ type: 'loaded' });
+                        dispatch({ type: "loaded" });
                     },
-                    priority: -1
+                    priority: -1,
                 });
                 registerEditorEventHandler({
                     debug: debugRef.current,
                     editor: editor,
-                    evtName: 'instanceReady',
+                    evtName: "instanceReady",
                     handler: function (_a) {
                         var editor = _a.editor;
-                        dispatch({ type: 'ready' });
+                        dispatch({ type: "ready" });
                         if (isInline && !isReadOnly) {
                             editor.setReadOnly(false);
                         }
@@ -301,33 +302,33 @@ function useCKEditor(_a) {
                                 noSnapshot: true,
                                 callback: function () {
                                     editor.resetUndo();
-                                }
+                                },
                             });
                         }
                     },
-                    priority: -1
+                    priority: -1,
                 });
                 registerEditorEventHandler({
                     debug: debugRef.current,
                     editor: editor,
-                    evtName: 'destroy',
+                    evtName: "destroy",
                     handler: function () {
-                        dispatch({ type: 'destroyed' });
+                        dispatch({ type: "destroyed" });
                     },
-                    priority: -1
+                    priority: -1,
                 });
                 dispatch({
-                    type: 'unloaded',
-                    payload: editor
+                    type: "unloaded",
+                    payload: editor,
                 });
             };
             ckeditor4IntegrationsCommon.getEditorNamespace(editorUrlRef.current, onNamespaceLoaded)
                 .then(initEditor)
                 .catch(function (error) {
-                if (process.env.NODE_ENV !== 'test') {
+                if (process.env.NODE_ENV !== "test") {
                     console.error(error);
                 }
-                dispatch({ type: 'error' });
+                dispatch({ type: "error" });
             });
         }
         return function () {
@@ -339,34 +340,34 @@ function useCKEditor(_a) {
     return {
         editor: editor,
         status: editor === null || editor === void 0 ? void 0 : editor.status,
-        error: hookStatus === 'error',
-        loading: hookStatus === 'loading'
+        error: hookStatus === "error",
+        loading: hookStatus === "loading",
     };
 }
 function reducer(state, action) {
     switch (action.type) {
-        case 'init':
-            return __assign(__assign({}, state), { hookStatus: 'init' });
-        case 'loading':
-            return __assign(__assign({}, state), { hookStatus: 'loading' });
-        case 'unloaded':
+        case "init":
+            return __assign(__assign({}, state), { hookStatus: "init" });
+        case "loading":
+            return __assign(__assign({}, state), { hookStatus: "loading" });
+        case "unloaded":
             return {
                 editor: action.payload,
-                hookStatus: 'unloaded'
+                hookStatus: "unloaded",
             };
-        case 'loaded':
-            return __assign(__assign({}, state), { hookStatus: 'loaded' });
-        case 'ready':
-            return __assign(__assign({}, state), { hookStatus: 'ready' });
-        case 'destroyed':
+        case "loaded":
+            return __assign(__assign({}, state), { hookStatus: "loaded" });
+        case "ready":
+            return __assign(__assign({}, state), { hookStatus: "ready" });
+        case "destroyed":
             return {
                 editor: undefined,
-                hookStatus: 'destroyed'
+                hookStatus: "destroyed",
             };
-        case 'error':
+        case "error":
             return {
                 editor: undefined,
-                hookStatus: 'error'
+                hookStatus: "error",
             };
         default:
             return state;
