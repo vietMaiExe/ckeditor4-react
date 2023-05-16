@@ -127,6 +127,8 @@ function useCKEditor<EditorEvent extends string>({
 					"CKEDITOR",
 					CKEDITOR,
 					isInline,
+					CKEDITOR.replace,
+					isInline ? "inline" : "replace",
 					CKEDITOR[isInline ? "inline" : "replace"],
 					element,
 					configRef.current
