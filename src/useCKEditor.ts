@@ -124,14 +124,9 @@ function useCKEditor<EditorEvent extends string>({
 					});
 				}
 				console.log(
-					"CKEDITOR",
+					"CKEDITOR123",
 					CKEDITOR,
-					isInline,
-					CKEDITOR.replace,
-					isInline ? "inline" : "replace",
-					CKEDITOR[isInline ? "inline" : "replace"],
-					element,
-					configRef.current
+					isInline ? "inline" : "replace"
 				);
 				const editor = CKEDITOR[isInline ? "inline" : "replace"](
 					element,
