@@ -28,7 +28,7 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/vietMaiExe/ckeditor4.git#v4.21.0"
+		"url": "git+https://github.com/vietMaiExe/ckeditor4.git"
 	},
 	"keywords": [
 		"wysiwyg",
@@ -51,7 +51,7 @@
 	},
 	"homepage": "https://github.com/ckeditor/ckeditor4-react#readme",
 	"peerDependencies": {
-		"ckeditor4": "https://github.com/vietMaiExe/ckeditor4.git#v4.21.0",
+		"ckeditor4": "https://github.com/vietMaiExe/ckeditor4.git",
 		"react": "^18"
 	},
 	"devDependencies": {
@@ -73,7 +73,7 @@
 		"@typescript-eslint/parser": "^5.52.0",
 		"browserstack-local": "^1.5.1",
 		"chalk": "^4.1.2",
-		"ckeditor4": "https://github.com/vietMaiExe/ckeditor4.git#v4.21.0",
+		"ckeditor4": "https://github.com/vietMaiExe/ckeditor4.git",
 		"eslint": "^8.34.0",
 		"eslint-config-ckeditor5": "^4.1.1",
 		"eslint-plugin-react": "^7.32.2",
@@ -101,7 +101,7 @@
 		"typescript": "^4.9.5"
 	},
 	"dependencies": {
-		"ckeditor4": "https://github.com/vietMaiExe/ckeditor4.git#v4.21.0",
+		"ckeditor4": "https://github.com/vietMaiExe/ckeditor4.git",
 		"ckeditor4-integrations-common": "^1.0.0",
 		"prop-types": "^15.8.1"
 	}
