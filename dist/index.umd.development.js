@@ -356,10 +356,8 @@
                             payload: CKEDITOR,
                         });
                     }
-                    var conditon = CKEDITOR[isInline ? "inline" : "replace"];
-                    var editor = typeof conditon === "function"
-                        ? conditon(element, configRef.current)
-                        : CKEDITOR;
+                    console.log("CKEDITOR", CKEDITOR, JSON.stringify(CKEDITOR), CKEDITOR["replace"]);
+                    var editor = CKEDITOR[isInline ? "inline" : "replace"](element, configRef.current);
                     var subscribedEditorEvents = subscribeToRef.current.filter(function (evtName) { return namespaceEvents.indexOf(evtName) === -1; });
                     subscribedEditorEvents.forEach(function (evtName) {
                         registerEditorEventHandler({
