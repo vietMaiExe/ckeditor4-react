@@ -123,12 +123,16 @@ function useCKEditor<EditorEvent extends string>({
 						payload: CKEDITOR,
 					});
 				}
-				const conditon = CKEDITOR[isInline ? "inline" : "replace"];
-
-				const editor =
-					typeof conditon === "function"
-						? conditon(element, configRef.current)
-						: CKEDITOR;
+				console.log(
+					"CKEDITOR",
+					CKEDITOR,
+					JSON.stringify(CKEDITOR),
+					CKEDITOR["replace"]
+				);
+				const editor = CKEDITOR[isInline ? "inline" : "replace"](
+					element,
+					configRef.current
+				);
 
 				const subscribedEditorEvents = subscribeToRef.current.filter(
 					(evtName: any) => namespaceEvents.indexOf(evtName) === -1
