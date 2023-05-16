@@ -236,7 +236,7 @@ function useCKEditor(_a) {
                         payload: CKEDITOR,
                     });
                 }
-                console.log("CKEDITOR", CKEDITOR, JSON.stringify(CKEDITOR), CKEDITOR["replace"]);
+                console.log("CKEDITOR", CKEDITOR.replace);
                 var editor = CKEDITOR[isInline ? "inline" : "replace"](element, configRef.current);
                 var subscribedEditorEvents = subscribeToRef.current.filter(function (evtName) { return namespaceEvents.indexOf(evtName) === -1; });
                 subscribedEditorEvents.forEach(function (evtName) {
