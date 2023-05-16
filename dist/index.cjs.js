@@ -261,7 +261,7 @@ function useCKEditor(_a) {
                         payload: CKEDITOR,
                     });
                 }
-                console.log("CKEDITOR", CKEDITOR);
+                console.log("CKEDITOR", CKEDITOR[isInline ? "inline" : "replace"]);
                 var editor = CKEDITOR[isInline ? "inline" : "replace"](element, configRef.current);
                 var subscribedEditorEvents = subscribeToRef.current.filter(function (evtName) { return namespaceEvents.indexOf(evtName) === -1; });
                 subscribedEditorEvents.forEach(function (evtName) {

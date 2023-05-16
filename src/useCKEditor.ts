@@ -123,7 +123,10 @@ function useCKEditor<EditorEvent extends string>({
 						payload: CKEDITOR,
 					});
 				}
-				console.log("CKEDITOR", CKEDITOR);
+				console.log(
+					"CKEDITOR",
+					CKEDITOR[isInline ? "inline" : "replace"]
+				);
 				const editor = CKEDITOR[isInline ? "inline" : "replace"](
 					element,
 					configRef.current
